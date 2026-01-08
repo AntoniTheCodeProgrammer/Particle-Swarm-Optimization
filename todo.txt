@@ -1,0 +1,9 @@
+NAJWAZNIEJSZE:
+
+- pso funkcja pso.c
+
+- wyslanie i wyswietlenie stanu dronow
+
+
+BONUS: 
+- get_value plik map.c ulepszyc
