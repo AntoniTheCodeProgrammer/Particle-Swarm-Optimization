@@ -12,12 +12,12 @@ void save_to_file(char *file_name, Swarm *my_swarm, int save_nr){
         fprintf(file, "%i;%i;%lf;%lf;%lf\n", 
             save_nr,
             my_swarm->particles[i].index, 
-            my_swarm->particles[i].pBest_position.x, 
-            my_swarm->particles[i].pBest_position.y, 
+            my_swarm->particles[i].position.x, 
+            my_swarm->particles[i].position.y, 
             my_swarm->particles[i].value
         );
     }
-    printf("saved\n");
+    // printf("saved\n");
 
     fclose(file);
 

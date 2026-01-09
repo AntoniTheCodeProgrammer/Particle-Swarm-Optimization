@@ -4,7 +4,7 @@ import matplotlib.animation as animation
 import numpy as np
 
 # --- KONFIGURACJA ---
-MAP_FILE = 'test_map.txt'
+MAP_FILE = 'gen_map.txt'
 RESULTS_FILE = 'results.csv'
 ANIMATION_SPEED = 1000  # 3000 ms = 3 sekundy
 

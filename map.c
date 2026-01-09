@@ -1,7 +1,40 @@
 #include "map.h"
 
 void gen_map(char *file_name){
+    FILE *file = fopen(file_name, "w");
+    if (file == NULL) {
+        printf("Błąd tworzenia pliku mapy!\n");
+        return;
+    }
 
+    int width = 10;
+    int height = 10;
+
+    scanf("%d", &width);
+    scanf("%d", &height);
+
+    fprintf(file, "%d %d\n", width, height);
+
+    int peak_x = rand() % width;
+    int peak_y = rand() % height;
+
+    double max_height = 100.0;
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            double dist = sqrt(pow(x - peak_x, 2) + pow(y - peak_y, 2));
+            
+            double val = max_height - (dist * 2.0);
+
+            double noise = ((double)rand() / RAND_MAX) * 10.0;
+            val += noise;
+
+            fprintf(file, "%.2lf ", val);
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
 }
 
 void create_map(Map *my_map, char *file_name){

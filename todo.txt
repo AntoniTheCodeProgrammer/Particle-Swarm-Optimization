@@ -1,6 +1,0 @@
-NAJWAZNIEJSZE:
-
-- pso funkcja pso.c
-
-BONUS: 
-- get_value plik map.c ulepszyc

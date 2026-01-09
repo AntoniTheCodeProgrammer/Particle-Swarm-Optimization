@@ -8,5 +8,6 @@
 #include "map.h"
 
 void gen_swarm(Swarm *my_swarm, Map *my_map, int particles_count, char *config_file);
+void pso(Swarm *my_swarm, Map *my_map, int interation);
 
 #endif

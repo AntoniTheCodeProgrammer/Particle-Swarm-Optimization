@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 
     // SYMULACJA
     for(int i = 0; i < liczba_iteracji; i++){
-        
+        pso(&my_swarm, &my_map, i);
 
         if(zapis_postepow != 0 && i % zapis_postepow == 0){
             int save_nr = i / zapis_postepow;
@@ -102,5 +102,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    printf("\n");
+    printf("WYNIK\n");
+    printf("Szukany obiekt znajduje się na pozycji x = %lf, y = %lf z sygnałem %lf.\n", my_swarm.g_Best_position.x, my_swarm.g_Best_position.y, my_swarm.g_Best_value);
     free_map(&my_map);
 };
