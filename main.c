@@ -1,18 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "struct.h"
 #include "map.h"
 #include "pso.h"
+#include "logger.h"
 
 void print_usage(const char *program_name) {
-    printf("Uzycie: %s <plik_mapy> [-p liczba_czastek] [-i liczba_iteracji] [-c plik_konfig] [-n co_ile_zapis]\n", program_name);
+    printf("Uzycie: %s <plik_mapy lub gen jesli chcesz generowac> [-p liczba_czastek] [-i liczba_iteracji] [-c plik_konfig] [-n co_ile_zapis]\n", program_name);
     printf("Przyklad: %s terrain.txt -p 50 -i 200 -c config.txt -n 2\n", program_name);
 }
 
 int main(int argc, char *argv[]) {
-    char *plik_mapy = "test_map.txt";
+    srand(time(NULL));
+
+    char *plik_mapy = NULL;
     int liczba_czastek = 30;
     int liczba_iteracji = 100;
     char *plik_konfiguracyjny = "config_file.txt";
@@ -77,14 +81,25 @@ int main(int argc, char *argv[]) {
     gen_swarm(&my_swarm, &my_map, liczba_czastek, plik_konfiguracyjny);
     // save_to_file function
 
+    // TWORZENIE PLIKU .csv
+    char *file_name = "results.csv";
+
+    FILE *file = fopen(file_name, "w");
+    if (file != NULL) {
+        fprintf(file, "Iteration;Id;X;Y;Value\n");
+        fclose(file);
+    } else {
+        printf("Błąd: Nie można utworzyć pliku wyników.\n");
+    }
+
     // SYMULACJA
     for(int i = 0; i < liczba_iteracji; i++){
-        // ruch dronow plik pso.c
+        
 
         if(zapis_postepow != 0 && i % zapis_postepow == 0){
-            // zapis plik logger.c
+            int save_nr = i / zapis_postepow;
+            save_to_file(file_name, &my_swarm, save_nr);            
         }
-        
     }
 
     free_map(&my_map);

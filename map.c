@@ -1,34 +1,43 @@
 #include "map.h"
 
+void gen_map(char *file_name){
+
+}
+
 void create_map(Map *my_map, char *file_name){
+    if(strcmp(file_name, "gen") == 0){
+        file_name = "gen_map.txt";
+        gen_map(file_name);
+    }
+    
     FILE *fptr = fopen(file_name, "r");
     if (fptr == NULL) {
         printf("Nie udalo sie otworzyc pliku mapy");
-        exit(1);
+        return;
     }
 
     if (fscanf(fptr, "%d %d", &my_map->width, &my_map->height) != 2) {
         fprintf(stderr, "Blad formatu naglowka mapy\n");
-        exit(1);
+        return;
     }
 
     my_map->values = (double**)malloc(my_map->height * sizeof(double*));
     if (my_map->values == NULL) {
         printf("Blad alokacji pamieci (wiersze)");
-        exit(1);
+        return;
     }
 
     for(int y = 0; y < my_map->height; y++){
         my_map->values[y] = (double*)malloc(my_map->width * sizeof(double));
         if (my_map->values[y] == NULL) {
             printf("Blad alokacji pamieci (kolumny)");
-            exit(1);
+            return;
         }
 
         for(int x = 0; x < my_map->width; x++){
             if (fscanf(fptr, "%lf", &my_map->values[y][x]) != 1) {
                 fprintf(stderr, "Blad odczytu wartosci w punkcie [%d, %d]\n", x, y);
-                exit(1);
+                return;
             }
         }
     }
