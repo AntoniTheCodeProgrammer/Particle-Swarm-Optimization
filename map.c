@@ -96,13 +96,42 @@ void free_map(Map *my_map){
 }
 
 double get_map_value(Map *my_map, Coordinates position){
-    // mozna zrobic bardziej zaawansowany system usredniajacy wartosci
-    int row = (int)position.y;
+    // Koordynaty wieżchołka lewego gornego 
+    int row = (int)position.y; 
     int col = (int)position.x;
 
-    if (row < 0 || row >= my_map->height || col < 0 || col >= my_map->width) {
+    if (row < 0 || row > my_map->height - 1 || col < 0 || col > my_map->width - 1) {
         return -10000.0;
     }
 
-    return my_map->values[row][col];
+    double value_x_1;
+    double value_x_2;
+    double value_final;
+
+    // Odległość od lewego wierzchołka w poziomie
+    double x_to = position.x - col;
+
+    // Wartość na gornej krawedzi
+    if (x_to == 0){
+        value_x_1 = my_map->values[row][col];
+    }
+    else{
+        value_x_1 = my_map->values[row][col] * (1 - x_to) + my_map->values[row][col+1] * x_to;
+    }
+
+    // Odległość od lewego wierzchołka w pionie
+    double y_to = position.y - row;
+
+    // Ostateczna wartość
+    if(y_to == 0){
+        value_final = value_x_1;
+    }
+    else{
+        // Wartość na dolnej krawedzi
+        value_x_2 = my_map->values[row + 1][col] * (1 - x_to) + my_map->values[row + 1][col+1] * x_to;
+
+        value_final = value_x_1 * (1 - y_to) + value_x_2 * y_to;
+    }
+    
+    return value_final;
 }

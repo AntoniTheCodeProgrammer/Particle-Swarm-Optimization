@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "struct.h"
 #include "map.h"
@@ -22,46 +23,31 @@ int main(int argc, char *argv[]) {
     char *plik_konfiguracyjny = "config_file.txt";
     int zapis_postepow = 0;
     
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-p") == 0) {
-            if (i + 1 < argc) {
-                liczba_czastek = atoi(argv[++i]);
-            } else {
-                fprintf(stderr, "Blad: Oczekiwano wartosci po fladze -p\n");
-                return 1;
-            }
-        } 
-        else if (strcmp(argv[i], "-i") == 0) {
-            if (i + 1 < argc) {
-                liczba_iteracji = atoi(argv[++i]);
-            } else {
-                fprintf(stderr, "Blad: Oczekiwano wartosci po fladze -i\n");
-                return 1;
-            }
-        } 
-        else if (strcmp(argv[i], "-c") == 0) {
-            if (i + 1 < argc) {
-                plik_konfiguracyjny = argv[++i];
-            } else {
-                fprintf(stderr, "Blad: Oczekiwano sciezki po fladze -c\n");
-                return 1;
-            }
-        } 
-        else if (strcmp(argv[i], "-n") == 0) {
-            if (i + 1 < argc) {
-                zapis_postepow = atoi(argv[++i]);
-            } else {
-                fprintf(stderr, "Blad: Oczekiwano wartosci po fladze -n\n");
-                return 1;
-            }
+    char c;
+    while ((c = getopt (argc, argv, "-p-i-c-n")) != -1) {
+        switch (c) {
+            case 'p':
+                printf("Option p has option %s\n", optarg);
+                liczba_czastek = atoi(optarg);
+                break;
+            case 'i':
+                printf("Option i has option %s\n", optarg);
+                liczba_iteracji = atoi(optarg);
+                break;
+            case 'c':
+                printf("Option c has option %s\n", optarg);
+                plik_konfiguracyjny = optarg;
+                break;
+            case 'n':
+                printf("Option n has option %s\n", optarg);
+                zapis_postepow = atoi(optarg);
+                break;
         }
-        else if (plik_mapy == NULL && argv[i][0] != '-') {
-            plik_mapy = argv[i];
-        } 
-        else {
-            fprintf(stderr, "Ostrzezenie: Nieznany argument lub zduplikowany plik mapy: %s\n", argv[i]);
-        }
-    }
+    } 
+
+    for (int index = optind; index < argc; index++)
+        printf ("Non-option argument %s\n", argv[index]);
+        
 
     if (plik_mapy == NULL) {
         fprintf(stderr, "Blad: Nie podano pliku mapy!\n");
@@ -69,11 +55,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    return 0;
     // GENEROWANIE MAPY w pliku map.c
     Map my_map;
 
     create_map(&my_map, plik_mapy);
-    print_map(&my_map);
+    // print_map(&my_map);
 
     // GENEROWANIE DRONOW w pliku struct.c 
     Swarm my_swarm;
@@ -106,4 +93,5 @@ int main(int argc, char *argv[]) {
     printf("WYNIK\n");
     printf("Szukany obiekt znajduje się na pozycji x = %lf, y = %lf z sygnałem %lf.\n", my_swarm.g_Best_position.x, my_swarm.g_Best_position.y, my_swarm.g_Best_value);
     free_map(&my_map);
+    free_swarm(&my_swarm);
 };

@@ -134,3 +134,7 @@ void pso(Swarm *my_swarm, Map *my_map, int interation){
         }       
     }
 }
+
+void free_swarm(Swarm *my_swarm){
+    free(my_swarm->particles);
+}
