@@ -23,8 +23,8 @@ int main(int argc, char *argv[]) {
     char *plik_konfiguracyjny = "config_file.txt";
     int zapis_postepow = 0;
     
-    char c;
-    while ((c = getopt (argc, argv, "-p-i-c-n")) != -1) {
+    int c;
+    while ((c = getopt (argc, argv, "p:i:c:n:")) != -1) {
         switch (c) {
             case 'p':
                 printf("Option p has option %s\n", optarg);
@@ -45,9 +45,13 @@ int main(int argc, char *argv[]) {
         }
     } 
 
-    for (int index = optind; index < argc; index++)
-        printf ("Non-option argument %s\n", argv[index]);
-        
+    printf("%i %i\n", optind, argc);
+    if (optind < argc) {
+        plik_mapy = argv[optind];
+    } else {
+        printf("Błąd: Nie podano pliku mapy!\n");
+        return 1;
+    }   
 
     if (plik_mapy == NULL) {
         fprintf(stderr, "Blad: Nie podano pliku mapy!\n");
