@@ -27,25 +27,20 @@ int main(int argc, char *argv[]) {
     while ((c = getopt (argc, argv, "p:i:c:n:")) != -1) {
         switch (c) {
             case 'p':
-                printf("Option p has option %s\n", optarg);
                 liczba_czastek = atoi(optarg);
                 break;
             case 'i':
-                printf("Option i has option %s\n", optarg);
                 liczba_iteracji = atoi(optarg);
                 break;
             case 'c':
-                printf("Option c has option %s\n", optarg);
                 plik_konfiguracyjny = optarg;
                 break;
             case 'n':
-                printf("Option n has option %s\n", optarg);
                 zapis_postepow = atoi(optarg);
                 break;
         }
     } 
 
-    printf("%i %i\n", optind, argc);
     if (optind < argc) {
         plik_mapy = argv[optind];
     } else {
@@ -59,7 +54,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    return 0;
     // GENEROWANIE MAPY w pliku map.c
     Map my_map;
 
