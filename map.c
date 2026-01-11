@@ -10,8 +10,8 @@ void gen_map(char *file_name){
     int width = 10;
     int height = 10;
 
-    scanf("%d", &width);
-    scanf("%d", &height);
+    scanf("Podaj szerokość: %d", &width);
+    scanf("Podaj wysokość: %d", &height);
 
     fprintf(file, "%d %d\n", width, height);
 
@@ -97,7 +97,7 @@ void free_map(Map *my_map){
 
 double get_map_value(Map *my_map, Coordinates position){
     // Koordynaty wieżchołka lewego gornego 
-    int row = (int)position.y; 
+    int row = (int)position.y;
     int col = (int)position.x;
 
     if (row < 0 || row > my_map->height - 1 || col < 0 || col > my_map->width - 1) {
@@ -111,27 +111,24 @@ double get_map_value(Map *my_map, Coordinates position){
     // Odległość od lewego wierzchołka w poziomie
     double x_to = position.x - col;
 
-    // Wartość na gornej krawedzi
-    if (x_to == 0){
-        value_x_1 = my_map->values[row][col];
-    }
-    else{
-        value_x_1 = my_map->values[row][col] * (1 - x_to) + my_map->values[row][col+1] * x_to;
-    }
+    // Zabezpieczenia wyscia poza indexy
+    int safe_next_col = col + 1;
+    if (safe_next_col >= my_map->width) safe_next_col = col;
 
+    int safe_next_row = row + 1;
+    if (safe_next_row >= my_map->height) safe_next_row = row;
+
+    // Wartość na gornej krawedzi
+    value_x_1 = my_map->values[row][col] * (1 - x_to) + my_map->values[row][safe_next_col] * x_to;
+
+    // Wartość na dolnej krawedzi
+    value_x_2 = my_map->values[safe_next_row][col] * (1 - x_to) + my_map->values[safe_next_row][safe_next_col] * x_to;
+    
     // Odległość od lewego wierzchołka w pionie
     double y_to = position.y - row;
 
-    // Ostateczna wartość
-    if(y_to == 0){
-        value_final = value_x_1;
-    }
-    else{
-        // Wartość na dolnej krawedzi
-        value_x_2 = my_map->values[row + 1][col] * (1 - x_to) + my_map->values[row + 1][col+1] * x_to;
-
-        value_final = value_x_1 * (1 - y_to) + value_x_2 * y_to;
-    }
+    value_final = value_x_1 * (1 - y_to) + value_x_2 * y_to;
+    
     
     return value_final;
 }

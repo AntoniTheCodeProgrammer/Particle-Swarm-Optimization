@@ -3,3 +3,5 @@
 pso
 
 .venv
+*.csv
+gen_map.txt
