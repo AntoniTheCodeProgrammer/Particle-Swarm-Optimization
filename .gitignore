@@ -1,7 +1,6 @@
 *.o
 *.pch
 pso
-
+gen_map.txt
 .venv
 *.csv
-gen_map.txt

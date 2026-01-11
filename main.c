@@ -11,7 +11,7 @@
 
 void print_usage(const char *program_name) {
     printf("Uzycie: %s <plik_mapy lub gen jesli chcesz generowac> [-p liczba_czastek] [-i liczba_iteracji] [-c plik_konfig] [-n co_ile_zapis]\n", program_name);
-    printf("Przyklad: %s terrain.txt -p 50 -i 200 -c config.txt -n 2\n", program_name);
+    printf("Przyklad: %s -p 50 -i 200 -c config.txt -n 2 terrain.txt\n", program_name);
 }
 
 int main(int argc, char *argv[]) {

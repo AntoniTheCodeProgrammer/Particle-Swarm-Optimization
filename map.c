@@ -4,14 +4,16 @@ void gen_map(char *file_name){
     FILE *file = fopen(file_name, "w");
     if (file == NULL) {
         printf("Błąd tworzenia pliku mapy!\n");
-        return;
+        exit(1);
     }
 
     int width = 10;
     int height = 10;
 
-    scanf("Podaj szerokość: %d", &width);
-    scanf("Podaj wysokość: %d", &height);
+    printf("Podaj szerokosc: ");
+    scanf("%d", &width);
+    printf("Podaj wysokość: ");
+    scanf("%d", &height);
 
     fprintf(file, "%d %d\n", width, height);
 
@@ -25,7 +27,7 @@ void gen_map(char *file_name){
             double dist = sqrt(pow(x - peak_x, 2) + pow(y - peak_y, 2));
             
             double val = max_height - (dist * 2.0);
-
+            
             double noise = ((double)rand() / RAND_MAX) * 10.0;
             val += noise;
 
@@ -46,31 +48,31 @@ void create_map(Map *my_map, char *file_name){
     FILE *fptr = fopen(file_name, "r");
     if (fptr == NULL) {
         printf("Nie udalo sie otworzyc pliku mapy");
-        return;
+        exit(1);
     }
 
     if (fscanf(fptr, "%d %d", &my_map->width, &my_map->height) != 2) {
         fprintf(stderr, "Blad formatu naglowka mapy\n");
-        return;
+        exit(1);
     }
 
     my_map->values = (double**)malloc(my_map->height * sizeof(double*));
     if (my_map->values == NULL) {
         printf("Blad alokacji pamieci (wiersze)");
-        return;
+        exit(1);
     }
 
     for(int y = 0; y < my_map->height; y++){
         my_map->values[y] = (double*)malloc(my_map->width * sizeof(double));
         if (my_map->values[y] == NULL) {
             printf("Blad alokacji pamieci (kolumny)");
-            return;
+            exit(1);
         }
 
         for(int x = 0; x < my_map->width; x++){
             if (fscanf(fptr, "%lf", &my_map->values[y][x]) != 1) {
                 fprintf(stderr, "Blad odczytu wartosci w punkcie [%d, %d]\n", x, y);
-                return;
+                exit(1);
             }
         }
     }
