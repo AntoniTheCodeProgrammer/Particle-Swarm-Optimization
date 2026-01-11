@@ -25,14 +25,14 @@ You can either generate a new random map or load an existing one.
 Option A: Generate a new map
 
 ```Bash
-./pso gen -p 50 -i 200 -n 2
+./ps -p 50 -i 200 -n 2 gen
 ```
 
 Note: The program will prompt you to enter the map width and height in the console.
 
 #### Option B: Load an existing map
 ```Bash
-./pso map_file.txt -p 30 -i 100 -n 5
+./pso -p 30 -i 100 -n 5 map_file.txt 
 ```
 
 ### 3. Visualization
