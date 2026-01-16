@@ -11,7 +11,7 @@
 
 void print_usage(const char *program_name) {
     printf("Uzycie: %s <plik_mapy lub gen jesli chcesz generowac> [-p liczba_czastek] [-i liczba_iteracji] [-c plik_konfig] [-n co_ile_zapis]\n", program_name);
-    printf("Przyklad: %s -p 50 -i 200 -c config.txt -n 2 terrain.txt\n", program_name);
+    printf("Przyklad: %s terrain.txt -p 50 -i 200 -c config.txt -n 2\n", program_name);
 }
 
 int main(int argc, char *argv[]) {
@@ -49,24 +49,23 @@ int main(int argc, char *argv[]) {
     }   
 
     if (plik_mapy == NULL) {
-        fprintf(stderr, "Blad: Nie podano pliku mapy!\n");
+        printf("Blad: Nie podano pliku mapy!\n");
         print_usage(argv[0]);
         return 1;
     }
 
-    // GENEROWANIE MAPY w pliku map.c
+    // GENERATING MAP in file map.c
     Map my_map;
 
     create_map(&my_map, plik_mapy);
     // print_map(&my_map);
 
-    // GENEROWANIE DRONOW w pliku struct.c 
+    // GENERATING PARTICLES in file pso.c
     Swarm my_swarm;
 
     gen_swarm(&my_swarm, &my_map, liczba_czastek, plik_konfiguracyjny);
-    // save_to_file function
 
-    // TWORZENIE PLIKU .csv
+    // CREATING .csv FILE
     char *file_name = "results.csv";
 
     FILE *file = fopen(file_name, "w");
@@ -77,7 +76,7 @@ int main(int argc, char *argv[]) {
         printf("Błąd: Nie można utworzyć pliku wyników.\n");
     }
 
-    // SYMULACJA
+    // SIMULATION
     for(int i = 0; i < liczba_iteracji; i++){
         pso(&my_swarm, &my_map, i);
 

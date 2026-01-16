@@ -1,7 +1,7 @@
 #include "pso.h"
 
 void gen_swarm(Swarm *my_swarm, Map *my_map, int particles_count, char *config_file){
-    // PLIK KONFIGURACYJNY
+    // CONFIG FILE read
     FILE *fptr = fopen(config_file, "r");
     if (fptr == NULL) {
         printf("Nie udalo sie otworzyc pliku konfiguracyjnego");
@@ -17,18 +17,18 @@ void gen_swarm(Swarm *my_swarm, Map *my_map, int particles_count, char *config_f
 
     fclose(fptr);
     
-    // INICJACJA ROJU
+    // Swarm init
     my_swarm->particle_count = particles_count;
     my_swarm->particles = (Particle*)malloc(particles_count * sizeof(Particle));
     
-    // Best point
+    // Best point init
     Coordinates best_position;
     double best_position_value = -9999999;
 
     for(int i = 0; i < particles_count; i++){
         my_swarm->particles[i].index = i;
 
-        // Losowanie i ustawienie pozycji
+        // Posting random position
         double x = (double)(rand() % my_map->width);
         double y = (double)(rand() % my_map->height);
 
@@ -38,17 +38,17 @@ void gen_swarm(Swarm *my_swarm, Map *my_map, int particles_count, char *config_f
 
         my_swarm->particles[i].position = position;
 
-        // Pobranie wartości
+        // Value ge
         double value = get_map_value(my_map, position); 
         my_swarm->particles[i].value = value;
 
-        // Wyzerowanie prędkości
+        // Changing velocity to zero
         Coordinates velocity;
         velocity.x = 0;
         velocity.y = 0;
         my_swarm->particles[i].velocity = velocity;
 
-        // Punkt Best
+        // Best point set
         my_swarm->particles[i].pBest_position = my_swarm->particles[i].position;
         my_swarm->particles[i].pBest_value = my_swarm->particles[i].value;
         
@@ -65,11 +65,11 @@ void gen_swarm(Swarm *my_swarm, Map *my_map, int particles_count, char *config_f
 void pso(Swarm *my_swarm, Map *my_map, int interation){
     for(int i = 0; i < my_swarm->particle_count; i++){
 
-        // Losowy mnożnik z zakresu 0-1
+        // Random r in range of [0,1]
         double r1 = (double)rand() / RAND_MAX; 
         double r2 = (double)rand() / RAND_MAX;
 
-        // Obliczanie ruchy ze wzoru
+        // Calculating velocity
         double x = (
             my_swarm->w * my_swarm->particles[i].velocity.x + 
             my_swarm->c_1 * r1 * (my_swarm->particles[i].pBest_position.x - my_swarm->particles[i].position.x) + 
@@ -82,7 +82,7 @@ void pso(Swarm *my_swarm, Map *my_map, int interation){
             my_swarm->c_2 * r2 * (my_swarm->g_Best_position.y - my_swarm->particles[i].position.y)
         );
 
-        // Ograniczenie ruchu
+        // speed limit
         if (x > 1){
             x = 1;
         }
@@ -96,14 +96,14 @@ void pso(Swarm *my_swarm, Map *my_map, int interation){
             y = -1;
         }
 
-        // Ruch i predkość
+        // Move and Velocity
         my_swarm->particles[i].velocity.x = x;
         my_swarm->particles[i].velocity.y = y;
 
         my_swarm->particles[i].position.x += x;
         my_swarm->particles[i].position.y += y;
 
-        // Zatrzymanie na granicach
+        // Border limit
         if (my_swarm->particles[i].position.x < 0) {
             my_swarm->particles[i].position.x = 0;
         } 
@@ -119,10 +119,10 @@ void pso(Swarm *my_swarm, Map *my_map, int interation){
             my_swarm->particles[i].position.y = my_map->height - 1;
         }
 
-        // Pobranie wartości
+        // Get value
         my_swarm->particles[i].value = get_map_value(my_map, my_swarm->particles[i].position);
 
-        // Zmiana punktow Best
+        // Best point update
         if(my_swarm->particles[i].pBest_value < my_swarm->particles[i].value){
             my_swarm->particles[i].pBest_value = my_swarm->particles[i].value;
             my_swarm->particles[i].pBest_position = my_swarm->particles[i].position;

@@ -17,7 +17,6 @@ void save_to_file(char *file_name, Swarm *my_swarm, int save_nr){
             my_swarm->particles[i].value
         );
     }
-    // printf("saved\n");
 
     fclose(file);
 
