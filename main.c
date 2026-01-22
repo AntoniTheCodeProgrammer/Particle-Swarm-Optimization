@@ -22,9 +22,10 @@ int main(int argc, char *argv[]) {
     int liczba_iteracji = 100;
     char *plik_konfiguracyjny = "config_file.txt";
     int zapis_postepow = 0;
+    int bonus_mode = 0;
     
     int c;
-    while ((c = getopt (argc, argv, "p:i:c:n:")) != -1) {
+    while ((c = getopt (argc, argv, "p:i:c:n:m:")) != -1) {
         switch (c) {
             case 'p':
                 liczba_czastek = atoi(optarg);
@@ -38,6 +39,9 @@ int main(int argc, char *argv[]) {
             case 'n':
                 zapis_postepow = atoi(optarg);
                 break;
+            case 'm':
+                bonus_mode = atoi(optarg);
+                break;
         }
     } 
 
@@ -45,6 +49,7 @@ int main(int argc, char *argv[]) {
         plik_mapy = argv[optind];
     } else {
         printf("Błąd: Nie podano pliku mapy!\n");
+        print_usage(argv[0]);
         return 1;
     }   
 
@@ -62,6 +67,9 @@ int main(int argc, char *argv[]) {
 
     // GENERATING PARTICLES in file pso.c
     Swarm my_swarm;
+
+    my_swarm.iteration_MAX = liczba_iteracji;
+    my_swarm.bonus_mode = bonus_mode;
 
     gen_swarm(&my_swarm, &my_map, liczba_czastek, plik_konfiguracyjny);
 

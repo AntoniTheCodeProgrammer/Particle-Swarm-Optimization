@@ -6,7 +6,7 @@ import numpy as np
 # --- CONFIG ---
 MAP_FILE = 'gen_map.txt'
 RESULTS_FILE = 'results.csv'
-ANIMATION_SPEED = 1000  # 1 sec
+ANIMATION_SPEED = 200  # 1 sec
 
 def load_map(filename):
     try:

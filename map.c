@@ -10,11 +10,19 @@ void gen_map(char *file_name){
     int width = 10;
     int height = 10;
 
+    double gradient;
+
     // size input
     printf("Podaj szerokosc: ");
     scanf("%d", &width);
     printf("Podaj wysokość: ");
     scanf("%d", &height);
+    printf("Podaj wpołczynnik gradientu(1-stromo, 10-spokojnie): ");
+    scanf("%lf", &gradient);
+
+
+    gradient = (1 / gradient) * 2;
+
 
     fprintf(file, "%d %d\n", width, height);
 
@@ -29,7 +37,7 @@ void gen_map(char *file_name){
         for (int x = 0; x < width; x++) {
             double dist = sqrt(pow(x - peak_x, 2) + pow(y - peak_y, 2));
             
-            double val = max_height - (dist * 2.0);
+            double val = max_height - (dist * gradient);
             
             double noise = (((double)rand() / RAND_MAX) * 20.0) - 10.0;
             val += noise;

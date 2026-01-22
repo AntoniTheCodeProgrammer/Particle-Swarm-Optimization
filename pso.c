@@ -96,6 +96,16 @@ void pso(Swarm *my_swarm, Map *my_map, int interation){
             y = -1;
         }
 
+        // rng bonus from Antos Casino Engineer
+        if(my_swarm->bonus_mode == 1){
+            double x_rng = ((((double)rand() / RAND_MAX) * 2) - 1) * interation / my_swarm->iteration_MAX;
+            double y_rng = ((((double)rand() / RAND_MAX) * 2) - 1) * interation / my_swarm->iteration_MAX;
+            printf("%i %i %lf %lf\n", interation, my_swarm->iteration_MAX, x_rng, y_rng);
+            x += x_rng;
+            y += y_rng;
+        }
+        
+
         // Move and Velocity
         my_swarm->particles[i].velocity.x = x;
         my_swarm->particles[i].velocity.y = y;

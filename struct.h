@@ -31,6 +31,9 @@ typedef struct{
     double w;
     double c_1;
     double c_2;
+
+    int bonus_mode;
+    int iteration_MAX;
 } Swarm;
 
 #endif
